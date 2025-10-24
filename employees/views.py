@@ -45,8 +45,8 @@ def employee_detail(request, employee_id):
                 status=status.HTTP_404_NOT_FOUND
             )
         
-        serializer = EmployeeSerializer(data=request.data)
-        serializer.instance = employee
+        # Pass instance to signal this is an update (used in email validation to exclude current employee)
+        serializer = EmployeeSerializer(instance=employee, data=request.data)
         if serializer.is_valid():
             updated_employee = repository.update_employee(employee_id, **serializer.validated_data)
             return Response(updated_employee)
