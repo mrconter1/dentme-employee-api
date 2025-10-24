@@ -1,6 +1,8 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
 from .repositories import repository
 
 
@@ -18,6 +20,14 @@ def list_employees(request):
         if not first_name or not last_name or not email:
             return Response(
                 {"error": "first_name, last_name, and email are required"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        try:
+            validate_email(email)
+        except ValidationError:
+            return Response(
+                {"error": "Invalid email format"},
                 status=status.HTTP_400_BAD_REQUEST
             )
         

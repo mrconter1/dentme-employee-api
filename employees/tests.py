@@ -109,3 +109,18 @@ class EmployeeAPITestCase(APITestCase):
         self.assertEqual(len(response.data), 1)
         self.assertEqual(response.data[0]['email'], 'anna@example.com')
 
+    def test_cannot_add_employee_with_invalid_email(self):
+        invalid_emails = ['notanemail', 'test@', '@example.com', 'test@.com', 'test..test@example.com']
+        
+        for invalid_email in invalid_emails:
+            employee_data = {
+                "first_name": "Anna",
+                "last_name": "Andersson",
+                "email": invalid_email
+            }
+            
+            response = self.client.post('/api/employees/', employee_data, format='json')
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            self.assertIn('error', response.data)
+            self.assertIn('email', response.data['error'].lower())
+
