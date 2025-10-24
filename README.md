@@ -64,6 +64,7 @@ python manage.py test
 
 All tests should pass with 14 test cases covering validation, CRUD operations, and error handling.
 
-## Design Notes
+## Design Decisions
 
-This implementation uses a repository pattern to abstract data access, making the codebase more maintainable and testable. Data is stored in-memory as specified in the requirements.
+- I consciously added two operations beyond the three required to follow standard **CRUD** conventions and make the API more complete.
+- I chose the **repository pattern** to allow for easy swapping of backend storage, making it simple to migrate from in-memory to PostgreSQL without touching views or serializers.
