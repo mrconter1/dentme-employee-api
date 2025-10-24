@@ -22,3 +22,35 @@ class EmployeeAPITestCase(APITestCase):
         self.assertIn('error', response.data)
         self.assertIn('email', response.data['error'].lower())
 
+    def test_add_two_employees_and_list_all(self):
+        employee1 = {
+            "first_name": "Anna",
+            "last_name": "Andersson",
+            "email": "anna@example.com"
+        }
+        employee2 = {
+            "first_name": "Erik",
+            "last_name": "Svensson",
+            "email": "erik@example.com"
+        }
+        
+        response1 = self.client.post('/api/employees/', employee1, format='json')
+        self.assertEqual(response1.status_code, status.HTTP_201_CREATED)
+        
+        response2 = self.client.post('/api/employees/', employee2, format='json')
+        self.assertEqual(response2.status_code, status.HTTP_201_CREATED)
+        
+        response = self.client.get('/api/employees/')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 2)
+        
+        self.assertEqual(response.data[0]['first_name'], 'Anna')
+        self.assertEqual(response.data[0]['last_name'], 'Andersson')
+        self.assertEqual(response.data[0]['email'], 'anna@example.com')
+        self.assertEqual(response.data[0]['id'], 1)
+        
+        self.assertEqual(response.data[1]['first_name'], 'Erik')
+        self.assertEqual(response.data[1]['last_name'], 'Svensson')
+        self.assertEqual(response.data[1]['email'], 'erik@example.com')
+        self.assertEqual(response.data[1]['id'], 2)
+
