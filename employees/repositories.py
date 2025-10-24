@@ -27,6 +27,10 @@ class InMemoryEmployeeRepository:
                 return True
         return False
 
+    def reset(self):
+        self.employees = []
+        self.next_id = 1
+
 
 repository = InMemoryEmployeeRepository()
 
