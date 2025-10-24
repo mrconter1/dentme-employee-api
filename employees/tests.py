@@ -127,3 +127,28 @@ class EmployeeAPITestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertIn('error', response.data)
 
+    def test_cannot_add_employee_with_missing_fields(self):
+        missing_first_name = {
+            "last_name": "Andersson",
+            "email": "anna@example.com"
+        }
+        response = self.client.post('/api/employees/', missing_first_name, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('first_name', response.data)
+        
+        missing_last_name = {
+            "first_name": "Anna",
+            "email": "anna@example.com"
+        }
+        response = self.client.post('/api/employees/', missing_last_name, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('last_name', response.data)
+        
+        missing_email = {
+            "first_name": "Anna",
+            "last_name": "Andersson"
+        }
+        response = self.client.post('/api/employees/', missing_email, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('email', response.data)
+
