@@ -12,8 +12,11 @@ class InMemoryEmployeeRepository:
                 return emp
         return None
 
-    def email_exists(self, email):
-        return any(emp['email'] == email for emp in self.employees)
+    def email_exists(self, email, exclude_id=None):
+        for emp in self.employees:
+            if emp['email'] == email and emp['id'] != exclude_id:
+                return True
+        return False
 
     def add_employee(self, first_name, last_name, email):
         employee = {

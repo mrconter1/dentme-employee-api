@@ -21,10 +21,8 @@ class EmployeeSerializer(serializers.Serializer):
         return self._validate_name_field(value)
 
     def validate_email(self, value):
-        # Skip email uniqueness check during update if email belongs to current employee
-        if hasattr(self, 'instance') and self.instance and self.instance.get('email') == value:
-            return value
-        if repository.email_exists(value):
+        employee_id = self.instance.get('id') if self.instance else None
+        if repository.email_exists(value, exclude_id=employee_id):
             raise serializers.ValidationError("An employee with this email already exists")
         return value
 
