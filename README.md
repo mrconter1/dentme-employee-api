@@ -21,7 +21,7 @@ Start the development server:
 python manage.py runserver
 ```
 
-The API will be available at `http://localhost:8000/api/`
+The API will be available at `http://localhost:8000/api/v1/`
 
 ## API Documentation
 
@@ -35,11 +35,11 @@ You can explore and test all endpoints directly from your browser.
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET | `/api/employees/` | List all employees |
-| POST | `/api/employees/` | Create a new employee |
-| GET | `/api/employees/{id}/` | Retrieve a specific employee |
-| PUT | `/api/employees/{id}/` | Update an employee |
-| DELETE | `/api/employees/{id}/` | Delete an employee |
+| GET | `/api/v1/employees/` | List all employees |
+| POST | `/api/v1/employees/` | Create a new employee |
+| GET | `/api/v1/employees/{id}/` | Retrieve a specific employee |
+| PUT | `/api/v1/employees/{id}/` | Update an employee |
+| DELETE | `/api/v1/employees/{id}/` | Delete an employee |
 
 ### Employee Schema
 

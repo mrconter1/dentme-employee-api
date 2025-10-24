@@ -136,4 +136,7 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': 'A REST API for managing employee records',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
+    'SERVERS': [
+        {'url': '/api/v1', 'description': 'Version 1'},
+    ],
 }

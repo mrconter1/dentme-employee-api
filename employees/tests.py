@@ -14,10 +14,10 @@ class EmployeeAPITestCase(APITestCase):
             "email": "anna@example.com"
         }
         
-        response = self.client.post('/api/employees/', employee_data, format='json')
+        response = self.client.post('/api/v1/employees/', employee_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         
-        response = self.client.post('/api/employees/', employee_data, format='json')
+        response = self.client.post('/api/v1/employees/', employee_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn('email', response.data)
 
@@ -33,13 +33,13 @@ class EmployeeAPITestCase(APITestCase):
             "email": "erik@example.com"
         }
         
-        response1 = self.client.post('/api/employees/', employee1, format='json')
+        response1 = self.client.post('/api/v1/employees/', employee1, format='json')
         self.assertEqual(response1.status_code, status.HTTP_201_CREATED)
         
-        response2 = self.client.post('/api/employees/', employee2, format='json')
+        response2 = self.client.post('/api/v1/employees/', employee2, format='json')
         self.assertEqual(response2.status_code, status.HTTP_201_CREATED)
         
-        response = self.client.get('/api/employees/')
+        response = self.client.get('/api/v1/employees/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 2)
         
@@ -65,13 +65,13 @@ class EmployeeAPITestCase(APITestCase):
             "email": "anna.andersson2@example.com"
         }
         
-        response1 = self.client.post('/api/employees/', employee1, format='json')
+        response1 = self.client.post('/api/v1/employees/', employee1, format='json')
         self.assertEqual(response1.status_code, status.HTTP_201_CREATED)
         
-        response2 = self.client.post('/api/employees/', employee2, format='json')
+        response2 = self.client.post('/api/v1/employees/', employee2, format='json')
         self.assertEqual(response2.status_code, status.HTTP_201_CREATED)
         
-        response = self.client.get('/api/employees/')
+        response = self.client.get('/api/v1/employees/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 2)
         
@@ -88,23 +88,23 @@ class EmployeeAPITestCase(APITestCase):
             "email": "anna@example.com"
         }
         
-        response = self.client.post('/api/employees/', employee_data, format='json')
+        response = self.client.post('/api/v1/employees/', employee_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         employee_id = response.data['id']
         
-        response = self.client.get('/api/employees/')
+        response = self.client.get('/api/v1/employees/')
         self.assertEqual(len(response.data), 1)
         
-        response = self.client.delete(f'/api/employees/{employee_id}/')
+        response = self.client.delete(f'/api/v1/employees/{employee_id}/')
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         
-        response = self.client.get('/api/employees/')
+        response = self.client.get('/api/v1/employees/')
         self.assertEqual(len(response.data), 0)
         
-        response = self.client.post('/api/employees/', employee_data, format='json')
+        response = self.client.post('/api/v1/employees/', employee_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         
-        response = self.client.get('/api/employees/')
+        response = self.client.get('/api/v1/employees/')
         self.assertEqual(len(response.data), 1)
         self.assertEqual(response.data[0]['email'], 'anna@example.com')
 
@@ -118,12 +118,12 @@ class EmployeeAPITestCase(APITestCase):
                 "email": invalid_email
             }
             
-            response = self.client.post('/api/employees/', employee_data, format='json')
+            response = self.client.post('/api/v1/employees/', employee_data, format='json')
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
             self.assertIn('email', response.data)
 
     def test_delete_nonexistent_employee_returns_404(self):
-        response = self.client.delete('/api/employees/999/')
+        response = self.client.delete('/api/v1/employees/999/')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertIn('error', response.data)
 
@@ -132,7 +132,7 @@ class EmployeeAPITestCase(APITestCase):
             "last_name": "Andersson",
             "email": "anna@example.com"
         }
-        response = self.client.post('/api/employees/', missing_first_name, format='json')
+        response = self.client.post('/api/v1/employees/', missing_first_name, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn('first_name', response.data)
         
@@ -140,7 +140,7 @@ class EmployeeAPITestCase(APITestCase):
             "first_name": "Anna",
             "email": "anna@example.com"
         }
-        response = self.client.post('/api/employees/', missing_last_name, format='json')
+        response = self.client.post('/api/v1/employees/', missing_last_name, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn('last_name', response.data)
         
@@ -148,7 +148,7 @@ class EmployeeAPITestCase(APITestCase):
             "first_name": "Anna",
             "last_name": "Andersson"
         }
-        response = self.client.post('/api/employees/', missing_email, format='json')
+        response = self.client.post('/api/v1/employees/', missing_email, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn('email', response.data)
 
@@ -158,7 +158,7 @@ class EmployeeAPITestCase(APITestCase):
             "last_name": "Andersson",
             "email": "anna@example.com"
         }
-        response = self.client.post('/api/employees/', too_long_first_name, format='json')
+        response = self.client.post('/api/v1/employees/', too_long_first_name, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn('first_name', response.data)
         
@@ -167,7 +167,7 @@ class EmployeeAPITestCase(APITestCase):
             "last_name": "B" * 101,
             "email": "anna@example.com"
         }
-        response = self.client.post('/api/employees/', too_long_last_name, format='json')
+        response = self.client.post('/api/v1/employees/', too_long_last_name, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn('last_name', response.data)
         
@@ -177,7 +177,7 @@ class EmployeeAPITestCase(APITestCase):
             "last_name": "Andersson",
             "email": "a" * 250 + "@example.com"
         }
-        response = self.client.post('/api/employees/', too_long_email, format='json')
+        response = self.client.post('/api/v1/employees/', too_long_email, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn('email', response.data)
 
@@ -187,7 +187,7 @@ class EmployeeAPITestCase(APITestCase):
             "last_name": "Andersson",
             "email": "anna@example.com"
         }
-        response = self.client.post('/api/employees/', name_with_numbers, format='json')
+        response = self.client.post('/api/v1/employees/', name_with_numbers, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn('first_name', response.data)
         
@@ -196,7 +196,7 @@ class EmployeeAPITestCase(APITestCase):
             "last_name": "Andersson@Test",
             "email": "anna@example.com"
         }
-        response = self.client.post('/api/employees/', name_with_symbols, format='json')
+        response = self.client.post('/api/v1/employees/', name_with_symbols, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn('last_name', response.data)
 
@@ -206,7 +206,7 @@ class EmployeeAPITestCase(APITestCase):
             "last_name": "O'Brien",
             "email": "anne@example.com"
         }
-        response = self.client.post('/api/employees/', valid_names, format='json')
+        response = self.client.post('/api/v1/employees/', valid_names, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data['first_name'], "Anne-Marie")
         self.assertEqual(response.data['last_name'], "O'Brien")
@@ -218,11 +218,11 @@ class EmployeeAPITestCase(APITestCase):
             "email": "anna@example.com"
         }
         
-        response = self.client.post('/api/employees/', employee_data, format='json')
+        response = self.client.post('/api/v1/employees/', employee_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         employee_id = response.data['id']
         
-        response = self.client.get(f'/api/employees/{employee_id}/')
+        response = self.client.get(f'/api/v1/employees/{employee_id}/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['id'], employee_id)
         self.assertEqual(response.data['first_name'], 'Anna')
@@ -230,7 +230,7 @@ class EmployeeAPITestCase(APITestCase):
         self.assertEqual(response.data['email'], 'anna@example.com')
 
     def test_get_nonexistent_employee_returns_404(self):
-        response = self.client.get('/api/employees/999/')
+        response = self.client.get('/api/v1/employees/999/')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertIn('error', response.data)
 
@@ -241,7 +241,7 @@ class EmployeeAPITestCase(APITestCase):
             "email": "anna@example.com"
         }
         
-        response = self.client.post('/api/employees/', employee_data, format='json')
+        response = self.client.post('/api/v1/employees/', employee_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         employee_id = response.data['id']
         
@@ -251,14 +251,14 @@ class EmployeeAPITestCase(APITestCase):
             "email": "anna.svensson@example.com"
         }
         
-        response = self.client.put(f'/api/employees/{employee_id}/', updated_data, format='json')
+        response = self.client.put(f'/api/v1/employees/{employee_id}/', updated_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['first_name'], 'Anna')
         self.assertEqual(response.data['last_name'], 'Svensson')
         self.assertEqual(response.data['email'], 'anna.svensson@example.com')
         self.assertEqual(response.data['id'], employee_id)
         
-        response = self.client.get(f'/api/employees/{employee_id}/')
+        response = self.client.get(f'/api/v1/employees/{employee_id}/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['email'], 'anna.svensson@example.com')
 
@@ -269,7 +269,7 @@ class EmployeeAPITestCase(APITestCase):
             "email": "anna@example.com"
         }
         
-        response = self.client.put('/api/employees/999/', updated_data, format='json')
+        response = self.client.put('/api/v1/employees/999/', updated_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertIn('error', response.data)
 
