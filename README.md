@@ -70,3 +70,12 @@ All tests should pass with 14 test cases covering validation, CRUD operations, a
 - I chose the **repository pattern** to allow for easy swapping of backend storage, making it simple to migrate from in-memory to PostgreSQL without touching views or serializers.
 - I chose **Django** REST Framework partly because most APIs work similarly but also because that is what Dentme currently uses.
 - I added **API versioning** (`/api/v1/`) to make it more proper and maintainable. Should have added this earlier as it became a large git diff when fixing it later.
+- I consciously chose not to use Django ORM for this task as it felt like over-engineering given the requirements.
+
+## Next Steps
+
+- **API authentication**: would be relatively easy to add and would be needed before we deploy.
+- **Production deployment**: would require disabling DEBUG variable, proper environment configuration, and setting up CI/CD.
+- **Django ORM**: natural next step for code elegance, readability, and persistence.
+- **Pagination**: would almost be needed from the moment we deploy, especially for the get all employees endpoint.
+- **Connect a simple front-end**: build something quick for end users that could further validate behavior.
