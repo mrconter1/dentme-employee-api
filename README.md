@@ -30,6 +30,8 @@ Each employee has an id (auto-generated), first_name, last_name, and email (uniq
 
 **GET /api/employees/** - List all employees.
 
+**POST /api/employees/** - Add a new employee. Required fields: first_name, last_name, email (must be unique).
+
 ## Running Tests
 
 ```bash
