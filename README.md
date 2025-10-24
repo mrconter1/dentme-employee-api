@@ -32,6 +32,8 @@ Each employee has an id (auto-generated), first_name, last_name, and email (uniq
 
 **POST /api/employees/** - Add a new employee. Required fields: first_name, last_name, email (must be unique).
 
+**DELETE /api/employees/{id}/** - Delete an employee by ID.
+
 ## Running Tests
 
 ```bash

@@ -20,6 +20,13 @@ class InMemoryEmployeeRepository:
         self.next_id += 1
         return employee
 
+    def delete_employee(self, employee_id):
+        for i, emp in enumerate(self.employees):
+            if emp['id'] == employee_id:
+                self.employees.pop(i)
+                return True
+        return False
+
 
 repository = InMemoryEmployeeRepository()
 

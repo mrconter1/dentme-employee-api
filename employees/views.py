@@ -30,3 +30,14 @@ def list_employees(request):
         employee = repository.add_employee(first_name, last_name, email)
         return Response(employee, status=status.HTTP_201_CREATED)
 
+
+@api_view(['DELETE'])
+def delete_employee(request, employee_id):
+    if repository.delete_employee(employee_id):
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    else:
+        return Response(
+            {"error": "Employee not found"},
+            status=status.HTTP_404_NOT_FOUND
+        )
+
