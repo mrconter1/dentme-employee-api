@@ -181,3 +181,33 @@ class EmployeeAPITestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn('email', response.data)
 
+    def test_cannot_add_employee_with_invalid_characters_in_names(self):
+        name_with_numbers = {
+            "first_name": "Anna123",
+            "last_name": "Andersson",
+            "email": "anna@example.com"
+        }
+        response = self.client.post('/api/employees/', name_with_numbers, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('first_name', response.data)
+        
+        name_with_symbols = {
+            "first_name": "Anna",
+            "last_name": "Andersson@Test",
+            "email": "anna@example.com"
+        }
+        response = self.client.post('/api/employees/', name_with_symbols, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('last_name', response.data)
+
+    def test_can_add_employee_with_valid_special_characters(self):
+        valid_names = {
+            "first_name": "Anne-Marie",
+            "last_name": "O'Brien",
+            "email": "anne@example.com"
+        }
+        response = self.client.post('/api/employees/', valid_names, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data['first_name'], "Anne-Marie")
+        self.assertEqual(response.data['last_name'], "O'Brien")
+
