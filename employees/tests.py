@@ -82,3 +82,30 @@ class EmployeeAPITestCase(APITestCase):
         self.assertEqual(response.data[1]['last_name'], 'Andersson')
         self.assertNotEqual(response.data[0]['email'], response.data[1]['email'])
 
+    def test_can_readd_employee_after_deletion(self):
+        employee_data = {
+            "first_name": "Anna",
+            "last_name": "Andersson",
+            "email": "anna@example.com"
+        }
+        
+        response = self.client.post('/api/employees/', employee_data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        employee_id = response.data['id']
+        
+        response = self.client.get('/api/employees/')
+        self.assertEqual(len(response.data), 1)
+        
+        response = self.client.delete(f'/api/employees/{employee_id}/')
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        
+        response = self.client.get('/api/employees/')
+        self.assertEqual(len(response.data), 0)
+        
+        response = self.client.post('/api/employees/', employee_data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        
+        response = self.client.get('/api/employees/')
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data[0]['email'], 'anna@example.com')
+
