@@ -1,10 +1,13 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+from drf_spectacular.utils import extend_schema
 from .repositories import repository
 from .serializers import EmployeeSerializer
 
 
+@extend_schema(responses=EmployeeSerializer(many=True))
+@extend_schema(request=EmployeeSerializer, responses={201: EmployeeSerializer}, methods=['POST'])
 @api_view(['GET', 'POST'])
 def list_employees(request):
     if request.method == 'GET':
@@ -19,6 +22,7 @@ def list_employees(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@extend_schema(responses={204: None, 404: None})
 @api_view(['DELETE'])
 def delete_employee(request, employee_id):
     if repository.delete_employee(employee_id):

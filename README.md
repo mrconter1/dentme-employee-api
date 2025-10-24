@@ -22,6 +22,10 @@ python manage.py runserver
 
 The API will be available at `http://localhost:8000/api/`
 
+## API Documentation
+
+Interactive API documentation is available at `http://localhost:8000/api/docs/` where you can explore and test all endpoints.
+
 ## Employee Model
 
 Each employee has an id (auto-generated), first_name, last_name, and email (unique).
