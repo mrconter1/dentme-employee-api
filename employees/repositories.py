@@ -26,6 +26,15 @@ class InMemoryEmployeeRepository:
         self.next_id += 1
         return employee
 
+    def update_employee(self, employee_id, first_name, last_name, email):
+        for emp in self.employees:
+            if emp['id'] == employee_id:
+                emp['first_name'] = first_name
+                emp['last_name'] = last_name
+                emp['email'] = email
+                return emp
+        return None
+
     def delete_employee(self, employee_id):
         for i, emp in enumerate(self.employees):
             if emp['id'] == employee_id:

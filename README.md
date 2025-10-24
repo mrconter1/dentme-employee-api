@@ -38,6 +38,7 @@ You can explore and test all endpoints directly from your browser.
 | GET | `/api/employees/` | List all employees |
 | POST | `/api/employees/` | Create a new employee |
 | GET | `/api/employees/{id}/` | Retrieve a specific employee |
+| PUT | `/api/employees/{id}/` | Update an employee |
 | DELETE | `/api/employees/{id}/` | Delete an employee |
 
 ### Employee Schema
@@ -61,7 +62,7 @@ You can explore and test all endpoints directly from your browser.
 python manage.py test
 ```
 
-All tests should pass with 12 test cases covering validation, CRUD operations, and error handling.
+All tests should pass with 14 test cases covering validation, CRUD operations, and error handling.
 
 ## Design Notes
 

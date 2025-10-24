@@ -23,8 +23,9 @@ def list_employees(request):
 
 
 @extend_schema(responses={200: EmployeeSerializer, 404: None})
+@extend_schema(request=EmployeeSerializer, responses={200: EmployeeSerializer, 404: None}, methods=['PUT'])
 @extend_schema(responses={204: None, 404: None}, methods=['DELETE'])
-@api_view(['GET', 'DELETE'])
+@api_view(['GET', 'PUT', 'DELETE'])
 def employee_detail(request, employee_id):
     if request.method == 'GET':
         employee = repository.get_employee(employee_id)
@@ -35,6 +36,21 @@ def employee_detail(request, employee_id):
                 {"error": "Employee not found"},
                 status=status.HTTP_404_NOT_FOUND
             )
+    
+    elif request.method == 'PUT':
+        employee = repository.get_employee(employee_id)
+        if not employee:
+            return Response(
+                {"error": "Employee not found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        serializer = EmployeeSerializer(data=request.data)
+        serializer.instance = employee
+        if serializer.is_valid():
+            updated_employee = repository.update_employee(employee_id, **serializer.validated_data)
+            return Response(updated_employee)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     elif request.method == 'DELETE':
         if repository.delete_employee(employee_id):

@@ -234,3 +234,42 @@ class EmployeeAPITestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertIn('error', response.data)
 
+    def test_can_update_employee(self):
+        employee_data = {
+            "first_name": "Anna",
+            "last_name": "Andersson",
+            "email": "anna@example.com"
+        }
+        
+        response = self.client.post('/api/employees/', employee_data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        employee_id = response.data['id']
+        
+        updated_data = {
+            "first_name": "Anna",
+            "last_name": "Svensson",
+            "email": "anna.svensson@example.com"
+        }
+        
+        response = self.client.put(f'/api/employees/{employee_id}/', updated_data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['first_name'], 'Anna')
+        self.assertEqual(response.data['last_name'], 'Svensson')
+        self.assertEqual(response.data['email'], 'anna.svensson@example.com')
+        self.assertEqual(response.data['id'], employee_id)
+        
+        response = self.client.get(f'/api/employees/{employee_id}/')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['email'], 'anna.svensson@example.com')
+
+    def test_update_nonexistent_employee_returns_404(self):
+        updated_data = {
+            "first_name": "Anna",
+            "last_name": "Andersson",
+            "email": "anna@example.com"
+        }
+        
+        response = self.client.put('/api/employees/999/', updated_data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertIn('error', response.data)
+
