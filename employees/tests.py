@@ -19,8 +19,7 @@ class EmployeeAPITestCase(APITestCase):
         
         response = self.client.post('/api/employees/', employee_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertIn('error', response.data)
-        self.assertIn('email', response.data['error'].lower())
+        self.assertIn('email', response.data)
 
     def test_add_two_employees_and_list_all(self):
         employee1 = {
@@ -121,6 +120,5 @@ class EmployeeAPITestCase(APITestCase):
             
             response = self.client.post('/api/employees/', employee_data, format='json')
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-            self.assertIn('error', response.data)
-            self.assertIn('email', response.data['error'].lower())
+            self.assertIn('email', response.data)
 

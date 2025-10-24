@@ -1,9 +1,8 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from django.core.validators import validate_email
-from django.core.exceptions import ValidationError
 from .repositories import repository
+from .serializers import EmployeeSerializer
 
 
 @api_view(['GET', 'POST'])
@@ -13,32 +12,11 @@ def list_employees(request):
         return Response(employees)
     
     elif request.method == 'POST':
-        first_name = request.data.get('first_name')
-        last_name = request.data.get('last_name')
-        email = request.data.get('email')
-        
-        if not first_name or not last_name or not email:
-            return Response(
-                {"error": "first_name, last_name, and email are required"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        
-        try:
-            validate_email(email)
-        except ValidationError:
-            return Response(
-                {"error": "Invalid email format"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        
-        if repository.email_exists(email):
-            return Response(
-                {"error": "An employee with this email already exists"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        
-        employee = repository.add_employee(first_name, last_name, email)
-        return Response(employee, status=status.HTTP_201_CREATED)
+        serializer = EmployeeSerializer(data=request.data)
+        if serializer.is_valid():
+            employee = repository.add_employee(**serializer.validated_data)
+            return Response(employee, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['DELETE'])
