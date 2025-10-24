@@ -122,3 +122,8 @@ class EmployeeAPITestCase(APITestCase):
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
             self.assertIn('email', response.data)
 
+    def test_delete_nonexistent_employee_returns_404(self):
+        response = self.client.delete('/api/employees/999/')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertIn('error', response.data)
+
