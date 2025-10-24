@@ -211,3 +211,26 @@ class EmployeeAPITestCase(APITestCase):
         self.assertEqual(response.data['first_name'], "Anne-Marie")
         self.assertEqual(response.data['last_name'], "O'Brien")
 
+    def test_can_get_individual_employee(self):
+        employee_data = {
+            "first_name": "Anna",
+            "last_name": "Andersson",
+            "email": "anna@example.com"
+        }
+        
+        response = self.client.post('/api/employees/', employee_data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        employee_id = response.data['id']
+        
+        response = self.client.get(f'/api/employees/{employee_id}/')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['id'], employee_id)
+        self.assertEqual(response.data['first_name'], 'Anna')
+        self.assertEqual(response.data['last_name'], 'Andersson')
+        self.assertEqual(response.data['email'], 'anna@example.com')
+
+    def test_get_nonexistent_employee_returns_404(self):
+        response = self.client.get('/api/employees/999/')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertIn('error', response.data)
+

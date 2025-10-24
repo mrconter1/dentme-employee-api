@@ -6,6 +6,12 @@ class InMemoryEmployeeRepository:
     def get_all_employees(self):
         return self.employees
 
+    def get_employee(self, employee_id):
+        for emp in self.employees:
+            if emp['id'] == employee_id:
+                return emp
+        return None
+
     def email_exists(self, email):
         return any(emp['email'] == email for emp in self.employees)
 

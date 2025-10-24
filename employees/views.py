@@ -22,14 +22,26 @@ def list_employees(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@extend_schema(responses={204: None, 404: None})
-@api_view(['DELETE'])
-def delete_employee(request, employee_id):
-    if repository.delete_employee(employee_id):
-        return Response(status=status.HTTP_204_NO_CONTENT)
-    else:
-        return Response(
-            {"error": "Employee not found"},
-            status=status.HTTP_404_NOT_FOUND
-        )
+@extend_schema(responses={200: EmployeeSerializer, 404: None})
+@extend_schema(responses={204: None, 404: None}, methods=['DELETE'])
+@api_view(['GET', 'DELETE'])
+def employee_detail(request, employee_id):
+    if request.method == 'GET':
+        employee = repository.get_employee(employee_id)
+        if employee:
+            return Response(employee)
+        else:
+            return Response(
+                {"error": "Employee not found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+    
+    elif request.method == 'DELETE':
+        if repository.delete_employee(employee_id):
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response(
+                {"error": "Employee not found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
 
