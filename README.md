@@ -4,7 +4,8 @@ A REST API for managing employee records built with Django and Django REST Frame
 
 ## Requirements
 
-Python 3.8+ and pip.
+- Python 3.8+
+- pip
 
 ## Setup
 
@@ -14,7 +15,7 @@ Install dependencies:
 pip install -r requirements.txt
 ```
 
-Run the development server:
+Start the development server:
 
 ```bash
 python manage.py runserver
@@ -24,21 +25,35 @@ The API will be available at `http://localhost:8000/api/`
 
 ## API Documentation
 
-Interactive API documentation is available at `http://localhost:8000/api/docs/` where you can explore and test all endpoints.
+Interactive API documentation with request/response examples is available at:
 
-## Employee Model
+**`http://localhost:8000/api/docs/`**
 
-Each employee has an id (auto-generated), first_name, last_name, and email (unique).
+You can explore and test all endpoints directly from your browser.
 
 ## API Endpoints
 
-**GET /api/employees/** - List all employees.
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/employees/` | List all employees |
+| POST | `/api/employees/` | Create a new employee |
+| GET | `/api/employees/{id}/` | Retrieve a specific employee |
+| DELETE | `/api/employees/{id}/` | Delete an employee |
 
-**POST /api/employees/** - Add a new employee. Required fields: first_name, last_name, email (must be unique).
+### Employee Schema
 
-**GET /api/employees/{id}/** - Get a specific employee by ID.
+```json
+{
+  "id": 1,
+  "first_name": "Anna",
+  "last_name": "Andersson",
+  "email": "anna@example.com"
+}
+```
 
-**DELETE /api/employees/{id}/** - Delete an employee by ID.
+**Validation Rules:**
+- `first_name` and `last_name`: Letters, spaces, hyphens, and apostrophes only (max 100 characters)
+- `email`: Valid email format, must be unique (max 254 characters)
 
 ## Running Tests
 
@@ -46,3 +61,8 @@ Each employee has an id (auto-generated), first_name, last_name, and email (uniq
 python manage.py test
 ```
 
+All tests should pass with 12 test cases covering validation, CRUD operations, and error handling.
+
+## Design Notes
+
+This implementation uses a repository pattern to abstract data access, making the codebase more maintainable and testable. Data is stored in-memory as specified in the requirements.
