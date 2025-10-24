@@ -152,3 +152,22 @@ class EmployeeAPITestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn('email', response.data)
 
+    def test_cannot_add_employee_with_too_long_fields(self):
+        too_long_first_name = {
+            "first_name": "A" * 101,
+            "last_name": "Andersson",
+            "email": "anna@example.com"
+        }
+        response = self.client.post('/api/employees/', too_long_first_name, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('first_name', response.data)
+        
+        too_long_last_name = {
+            "first_name": "Anna",
+            "last_name": "B" * 101,
+            "email": "anna@example.com"
+        }
+        response = self.client.post('/api/employees/', too_long_last_name, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('last_name', response.data)
+
