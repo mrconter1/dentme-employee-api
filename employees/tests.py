@@ -170,4 +170,14 @@ class EmployeeAPITestCase(APITestCase):
         response = self.client.post('/api/employees/', too_long_last_name, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn('last_name', response.data)
+        
+        # Test email max_length validation
+        too_long_email = {
+            "first_name": "Anna",
+            "last_name": "Andersson",
+            "email": "a" * 250 + "@example.com"
+        }
+        response = self.client.post('/api/employees/', too_long_email, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('email', response.data)
 
