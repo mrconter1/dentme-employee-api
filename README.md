@@ -2,6 +2,16 @@
 
 A REST API for managing employee records built with Django and Django REST Framework.
 
+## Table of Contents
+
+- [Requirements](#requirements)
+- [Setup](#setup)
+- [API Documentation](#api-documentation)
+- [API Endpoints](#api-endpoints)
+- [Running Tests](#running-tests)
+- [Design Decisions](#design-decisions)
+- [Next Steps](#next-steps)
+
 ## Requirements
 
 - Python 3.8+
