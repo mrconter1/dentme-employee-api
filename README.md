@@ -68,3 +68,5 @@ All tests should pass with 14 test cases covering validation, CRUD operations, a
 
 - I consciously added two operations beyond the three required to follow standard **CRUD** conventions and make the API more complete.
 - I chose the **repository pattern** to allow for easy swapping of backend storage, making it simple to migrate from in-memory to PostgreSQL without touching views or serializers.
+- I chose **Django** REST Framework partly because most APIs work similarly but also because that is what Dentme currently uses.
+- I added **API versioning** (`/api/v1/`) to make it more proper and maintainable. Should have added this earlier as it became a large git diff when fixing it later.
