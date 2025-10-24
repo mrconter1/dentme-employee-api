@@ -22,9 +22,13 @@ python manage.py runserver
 
 The API will be available at `http://localhost:8000/api/`
 
+## Employee Model
+
+Each employee has an id (auto-generated), first_name, last_name, and email (unique).
+
 ## API Endpoints
 
-**GET /api/hello/** - Test endpoint returning a hello world message.
+**GET /api/employees/** - List all employees.
 
 ## Running Tests
 
